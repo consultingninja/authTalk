@@ -1,2 +1,56 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+    import {goto} from '$app/navigation';
+    import {user} from '../stores';
+    export let data;
+
+
+
+    let navChoice =  '/';
+
+    function handleNav(e:any){
+        console.log(e.target.value);
+        goto(e.target.value,{noScroll: false})
+    }
+    $:User = data?.authedUser;
+
+    $:{
+        const newUser = data?.authedUser;
+        user.set(newUser);
+    }
+
+    
+</script>
+
+
+<div class="home-wrapper">
+<h1>Welcome to The Photo App {User?.firstName??''}</h1>
+<p>Visit my channel <a href="https://www.youtube.com/channel/UCwPrPv9eS7Xgfp_wi7uxt0g">@ConsultingNinja</a> to see more great videos!</p>
+
+{#if data.URLList.length}
+<p>Not sure where to go? Check out one of these users!</p>
+<form>
+    <select bind:value={navChoice} name="urlList" on:change={handleNav}>
+        <option value="/">User List</option>
+    {#each data.URLList as URL}
+        <option value={URL}>{URL}</option>
+    {/each}
+    </select>
+</form> 
+{/if}
+
+</div>
+
+<style>
+    a{
+        color:#007bff;
+        text-decoration: none;
+    }
+    a:hover{
+        text-decoration: underline;
+        text-decoration-color: #FFFFFF ;
+
+    }
+    .home-wrapper{
+        height: 100vh;
+    }
+</style>
