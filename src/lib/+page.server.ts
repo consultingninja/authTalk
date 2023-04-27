@@ -9,13 +9,10 @@ import { dbConn } from '../../../dbConn.js';
 
 
 
-export async function load({fetch}){
+export async function load({locals}){
+    if(!locals.authedUser) throw redirect(302,'/login');
 
-    const authResponse = await authCheck(fetch);
-
-    if(!authResponse.checkAuthResult) throw redirect(302,'/login');
-
-    let userMinusPassword:UserWithoutPassword  = authResponse.userMinusPassword;
+    let userMinusPassword:UserWithoutPassword  = locals.authedUser;
     console.log("load user",userMinusPassword)
 
     return {userMinusPassword}
@@ -24,7 +21,7 @@ export async function load({fetch}){
 
 
 export const actions:Actions = {
-    saveOptions: async({request,fetch}:RequestEvent): Promise<adminFormResponse|ActionFailure<adminFormResponse> | Redirect> =>{
+    saveOptions: async({request,locals}:RequestEvent): Promise<adminFormResponse|ActionFailure<adminFormResponse> | Redirect> =>{
         const adminFormData = await request.formData();
         const layout = adminFormData.get('layout')??'';
         const primary = adminFormData.get('primary')??'';
@@ -36,9 +33,7 @@ export const actions:Actions = {
         const message = adminFormData.get('message')??'';
 
 
-        const authResponse = await authCheck(fetch);
-
-        let authedUser = authResponse.userMinusPassword;
+        let authedUser = locals?.authedUser;
 
         const options:Options ={
             layout: layout.toString(),

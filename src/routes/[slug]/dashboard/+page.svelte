@@ -13,8 +13,6 @@
 
     $:User = data?.userMinusPassword;
     $:DisplayUser = data?.userMinusPassword;
-    $:Photos = data?.userFiles;
-    $:ShowConfirmDelete = selectedPicture && confirmDelete ;
 
     $:{
         const newUser = User;
@@ -31,19 +29,7 @@
         },4000)
     }
 
-    function getBase64(image:any) {
-        const reader = new FileReader();
-        reader.readAsDataURL(image);
-        reader.onload = e => {
-            picture = e.target?.result;
-            const data = picture.split(',');
-            pictureData = data[1];
-        };
-    };
 
-    function handlePreview(){
-        pictureData = selectedPicture.value ;
-    }
 
 
 </script>
@@ -88,18 +74,6 @@
             </div>
 
             <div class="layout-option">
-                <label for="heroImage">Hero Image</label>
-                <select class="preview-select" name="heroImage" value={User?.options.heroImage}>
-                    <option value=''>Select an Image to Use for Hero area.</option>
-                    {#each Photos as photo}
-                        <option value={photo}>{photo}</option>
-                    {/each}
-                    </select>
-            </div>
-
-
-
-            <div class="layout-option">
                 <div>
                     <label for="message">Message</label>
                 </div>
@@ -121,54 +95,7 @@
 
         </div>
         
-        <form method="post" action="?/uploadPicture">
-            <div class="layout-option-upload">
-                <label for="imageList">Images</label>
-                <select class="preview-select" bind:value={selectedPicture} name="imageList" on:change={handlePreview}>
-                <option value=''>Select an Image to Preview it for Deletion</option>
-                {#each Photos as photo}
-                    <option value={photo}>{photo}</option>
-                {/each}
-                </select>
-                {#if selectedPicture !== ''}
-                <img class='image' src={`/${DisplayUser?.URL}/${selectedPicture}`} alt="File-To-View"/>
-                {/if}
-        
-                {#if pictureData}
-                    <p class="preview">Preview</p>
-                    <img class='image' src={picture} alt="File-To-Upload"/>
-                {:else if !pictureData && !selectedPicture}
-                    <img id="no-image"  alt="File-To-Upload"/>
-                {/if}
-                <input type="hidden" bind:value={pictureData} name="pictureData" />
-                <input bind:this={fileInput} class="hidden" id="pictureName" name="pictureName" type="file" accept=".png,.jpg" bind:files  on:change={() => getBase64(files[0])}/>
-                {#if ShowConfirmDelete}
-                <p class="delete-warning">This is permanent, are you sure?</p>
-                {/if}
-                <div>
-                    {#if !selectedPicture}
-                        {#if pictureData}
-                        <button type="button"  on:click={ () => fileInput.click()  }>Change</button>
-                        <button type="submit" >Upload</button>
-                        {:else}
-                        <button type="button"  on:click={ () => fileInput.click()  }>Upload</button>
-                        {/if}
-                    {:else}
-                    <button type="button" on:click={() => {selectedPicture = ''; confirmDelete = false}} >Clear</button>
-
-                    {#if ShowConfirmDelete}
-                    <button name="delete" formaction="?/delete" >Delete</button>
-                    {:else}
-                    <button type="button" on:click={()=> confirmDelete = !confirmDelete} >Delete</button>
-                    {/if}
-                    {/if}
-
-
-                </div>
-        
-            </div>
-        
-        </form>
+ 
         
         </div>
 

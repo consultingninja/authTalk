@@ -46,9 +46,6 @@
         color: var(--theme-textColor);
         margin-block: .5em;
     }
-    .hero-container{
-        width:100vw;
-    }
     .hero-image{
 
         height:auto;
