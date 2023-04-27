@@ -4,7 +4,7 @@ import { findUserByUrl } from './backendUtils';
 import jwt from 'jsonwebtoken';
 
 export async function handle({ event, resolve }) {
-    //console.log("Requested URL is: ",event.url.pathname);
+    console.log("Requested URL is: ",event.url.pathname);
     const authToken = event.cookies.get('authToken');
     try{
         if(!authToken) event.locals.authedUser = undefined;

@@ -40,6 +40,7 @@
         <h2>
             Admin Options
             <sup title="These options will be reflected only for your URL."><small class="info-icon">i</small></sup>
+            <a href="/{data?.userMinusPassword.URL}/dashboard/nestedPage">Nested</a>
         </h2>
         
         <form method="post" action="?/saveOptions">

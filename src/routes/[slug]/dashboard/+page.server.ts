@@ -24,7 +24,7 @@ export async function load({fetch}){
 
 
 export const actions:Actions = {
-    saveOptions: async({request,fetch}:RequestEvent): Promise<adminFormResponse|ActionFailure<adminFormResponse> | Redirect> =>{
+    saveOptions: async({request,fetch,locals}:RequestEvent): Promise<adminFormResponse|ActionFailure<adminFormResponse> | Redirect> =>{
         const adminFormData = await request.formData();
         const layout = adminFormData.get('layout')??'';
         const primary = adminFormData.get('primary')??'';
@@ -34,6 +34,7 @@ export const actions:Actions = {
         const hero = adminFormData.get('hero')? true: false;
         const heroImage = adminFormData.get('heroImage')??'';
         const message = adminFormData.get('message')??'';
+
 
 
         const authResponse = await authCheck(fetch);
